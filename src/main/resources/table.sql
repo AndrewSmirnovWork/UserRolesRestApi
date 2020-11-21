@@ -25,14 +25,14 @@ alter table role
 
 DROP TABLE IF EXISTS user_role;
 
-create table user_role
+create table role_user
 (
+    role_id    int          not null,
     user_login varchar(255) not null,
-    role_id    int          not null
-        primary key,
-    constraint user_role_role_id_fk
+    primary key (user_login, role_id),
+    constraint role_user_role_id_fk
         foreign key (role_id) references role (id),
-    constraint user_role_user_login_fk
+    constraint role_user_user_login_fk
         foreign key (user_login) references user (login)
 );
 
