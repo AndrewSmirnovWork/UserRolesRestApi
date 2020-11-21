@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -37,14 +38,16 @@ public class User implements Serializable {
     @NotBlank
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch=FetchType.LAZY,
+            cascade= {CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "user_login"),
+            name = "role_user",
+            joinColumns = @JoinColumn(name = "user_login" ),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     @JsonView(Views.Internal.class)
-    private Set<Role> roles;
+    private Collection<Role> roles = new HashSet<>();
 
     public User() {
     }
@@ -94,7 +97,7 @@ public class User implements Serializable {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
 

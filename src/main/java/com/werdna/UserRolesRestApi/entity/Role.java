@@ -8,6 +8,8 @@ import com.werdna.UserRolesRestApi.views.Views;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,14 +28,9 @@ public class Role implements Serializable {
     @JsonView(Views.Internal.class)
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_login")
-    )
-    @JsonView(Views.Internal.class)
-    private Set<User> users;
+    @ManyToMany(mappedBy = "roles")
+    @JsonIgnore
+    private Set<User> users = new HashSet<>();
 
     public Role() {
     }
@@ -58,7 +55,7 @@ public class Role implements Serializable {
         this.name = name;
     }
 
-    public Set<User> getUsers() {
+    public Collection<User> getUsers() {
         return users;
     }
 

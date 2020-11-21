@@ -1,4 +1,4 @@
-package com.werdna.UserRolesRestApi.dao;
+package com.werdna.UserRolesRestApi.repository;
 
 import com.werdna.UserRolesRestApi.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,6 +8,8 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
-    Optional<User> findByLogin(String login);
+    User findByLogin(String login);
+
+    Boolean existsByLogin(String login);
 
 }
